@@ -1,10 +1,17 @@
 package org.kasource.validation.phone.impl;
 
 import java.math.BigInteger;
+import java.util.Locale;
+
+import javax.validation.ConstraintValidatorContext;
 
 import org.kasource.validation.AbstractValidator;
 import org.kasource.validation.phone.Phone;
 
+import com.google.i18n.phonenumbers.MetadataLoader;
+import com.google.i18n.phonenumbers.NumberParseException;
+import com.google.i18n.phonenumbers.PhoneNumberUtil;
+import com.google.i18n.phonenumbers.Phonenumber.PhoneNumber;
 public abstract class AbstractPhoneValidator extends AbstractValidator {
     private static final String[] SEPERATORS = {" ", "+", "-", "(", ")", "."};
     private String country;
@@ -22,8 +29,16 @@ public abstract class AbstractPhoneValidator extends AbstractValidator {
         if (value == null) {
             return true;
         }
-       if (country != null) {
-           return false;
+       if (country != null && !country.isEmpty()) {
+           PhoneNumberUtil util = PhoneNumberUtil.getInstance();
+           PhoneNumber number;
+            try {
+                number = util.parse(value.toString(), country);
+                return util.isPossibleNumber(number) && util.isValidNumber(number);
+            } catch (NumberParseException e) {
+               return false;
+            }
+                   
        } else {
            return defaultValidator(value.toString());
        }
@@ -54,5 +69,13 @@ public abstract class AbstractPhoneValidator extends AbstractValidator {
             number = number.replace(separator, "");
         }
         return number;
+    }
+    
+    protected void setConstraintMessage(ConstraintValidatorContext context) {
+        if (country != null && !country.isEmpty()) {
+            String countryName = new Locale("", country).getDisplayCountry(Locale.getDefault());
+            context.disableDefaultConstraintViolation();
+            context.buildConstraintViolationWithTemplate("{org.kasource.validation.phone.Phone} " + countryName).addConstraintViolation();
+        }
     }
 }

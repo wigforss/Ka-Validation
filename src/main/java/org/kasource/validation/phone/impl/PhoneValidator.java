@@ -15,7 +15,11 @@ public class PhoneValidator extends AbstractPhoneValidator implements Constraint
 
     @Override
     public boolean isValid(Object value, ConstraintValidatorContext context) {
-        return super.isValid(value);
+        boolean isValid = isValid(value);
+        if (!isValid) {
+            setConstraintMessage(context);
+        }
+        return isValid;
         
     }
     

@@ -31,8 +31,8 @@ public class IterableLocaleValidatorTest {
     public void testCaseSensitive() {
        EasyMockUnitils.replay();
        validator.initialize(new AnnotationBuilder<Locale>(Locale.class).build());
-       assertTrue( validator.isValid(new ListBuilder<String>().add("en-US", "sv-SE").build(), context));
-       assertFalse( validator.isValid(new ListBuilder<String>().add("en-US", "sv-SE", "EN-US").build(), context));
+       assertTrue(validator.isValid(new ListBuilder<String>().add("en-US", "sv-SE").build(), context));
+       assertFalse(validator.isValid(new ListBuilder<String>().add("en-US", "sv-SE", "EN-US").build(), context));
       
     }
     
