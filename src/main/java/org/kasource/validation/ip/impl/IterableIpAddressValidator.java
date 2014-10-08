@@ -6,7 +6,7 @@ import javax.validation.ConstraintValidatorContext;
 
 import org.kasource.validation.ip.IpAddress;
 
-public class ItarbleIpAddressValidator extends AbstractIpAddressValidator implements ConstraintValidator<IpAddress, Iterable<? extends Object>> {
+public class IterableIpAddressValidator extends AbstractIpAddressValidator implements ConstraintValidator<IpAddress, Iterable<? extends Object>> {
 
     @Override
     public void initialize(IpAddress ipAddress) {

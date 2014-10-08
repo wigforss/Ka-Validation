@@ -24,9 +24,13 @@ public abstract class AbstractIpAddressValidator extends AbstractValidator {
             return ip4Validator.isValid(value.toString());
         } else {    
             try {
-    
-                Inet6Address.getByName(value.toString());
-                return true;
+                String ip = value.toString();
+                if (ip.contains(".") || ip.contains(":")) {
+                    Inet6Address.getByName(value.toString());
+                    return true;
+                } else {
+                    return false;
+                }
             } catch (UnknownHostException uhe) {
                 return false;
             }

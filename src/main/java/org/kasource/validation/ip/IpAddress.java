@@ -15,7 +15,7 @@ import javax.validation.Constraint;
 
 import org.kasource.validation.ip.impl.ArrayIpAddressValidator;
 import org.kasource.validation.ip.impl.IpAddressValidator;
-import org.kasource.validation.ip.impl.ItarbleIpAddressValidator;
+import org.kasource.validation.ip.impl.IterableIpAddressValidator;
 
 /**
  * Validates IP Addresses, either both IP v4 and IP v6 or only IP v4, default is both. 
@@ -31,9 +31,9 @@ import org.kasource.validation.ip.impl.ItarbleIpAddressValidator;
 @Target({METHOD, FIELD, CONSTRUCTOR, PARAMETER, ANNOTATION_TYPE})
 @Constraint(validatedBy = {IpAddressValidator.class,
                            ArrayIpAddressValidator.class,
-                           ItarbleIpAddressValidator.class})
+                           IterableIpAddressValidator.class})
 public @interface IpAddress {
-    String message() default "{validation.message.ip}";
+    String message() default "{org.kasource.validation.ip.IpAddress}";
 
     /** Set to true to restrict to only IP v4 addresses **/
     boolean ip4Only() default false;

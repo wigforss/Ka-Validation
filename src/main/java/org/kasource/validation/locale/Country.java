@@ -17,7 +17,11 @@ import org.kasource.validation.locale.impl.ArrayCountryValidator;
 import org.kasource.validation.locale.impl.CountryValidator;
 import org.kasource.validation.locale.impl.IterableCountryValidator;
 
-
+/**
+ * Validates Country code  (ISO 3166 alpha-2)
+ * 
+ * @author rikardwi
+ **/
 @Documented
 @Retention(RUNTIME)
 @Target({METHOD, FIELD, CONSTRUCTOR, PARAMETER, ANNOTATION_TYPE})
@@ -25,7 +29,7 @@ import org.kasource.validation.locale.impl.IterableCountryValidator;
                           ArrayCountryValidator.class,
                           IterableCountryValidator.class})
 public @interface Country {
-    String message() default "{validation.message.country}";
+    String message() default "{org.kasource.validation.locale.Country}";
 
     boolean caseSensetive() default false;
     

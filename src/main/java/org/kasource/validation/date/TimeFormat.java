@@ -38,7 +38,7 @@ import org.kasource.validation.date.impl.TimeValidator;
                            ArrayTimeValidator.class, 
                            IterableTimeValidator.class})
 public @interface TimeFormat {
-    String message() default "{validation.message.timeformat}";
+    String message() default "{org.kasource.validation.date.TimeFormat}";
 
     /** Time Pattern from java.text.SimpleDateFormat **/
     String value() default "HH:mm:ss";

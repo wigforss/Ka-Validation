@@ -39,22 +39,10 @@ import org.kasource.validation.date.impl.IterableDateTimeValidator;
                            ArrayDateTimeValidator.class, 
                            IterableDateTimeValidator.class})
 public @interface DateTimeFormat {
-    String message() default "{validation.message.datetimeformat}";
+    String message() default "{org.kasource.validation.date.DateTimeFormat}";
     
     /** Date Time Pattern from java.text.SimpleDateFormat **/
     String value() default "yyyy-MM-dd HH:mm:ss";
-    
-    boolean rangeCheck() default false;
-    
-    int offset() default 0;
-    
-    int before() default 0;
-    
-    int after() default 0;
-    
-    TimeUnit timeUnit() default TimeUnit.DAYS;
-    
-    boolean ignoreTimePart() default false;
     
     Class<?>[] groups() default {};
 

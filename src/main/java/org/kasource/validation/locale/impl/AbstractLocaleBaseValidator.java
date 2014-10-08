@@ -58,7 +58,7 @@ public abstract class AbstractLocaleBaseValidator extends AbstractValidator {
         if (!caseSensetive) {
             code = code.toLowerCase();
         }
-        return LANGS.contains(value.toString());
+        return LANGS.contains(code);
     }
     
     protected boolean isValidCountry(Object value, boolean caseSensetive) {

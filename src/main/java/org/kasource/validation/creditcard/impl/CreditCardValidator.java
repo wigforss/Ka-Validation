@@ -20,8 +20,11 @@ public class CreditCardValidator extends AbstractCreditCardValidator implements 
 
     @Override
     public boolean isValid(String value, ConstraintValidatorContext context) {
-        
-        return isValid(value);
+        boolean isValid = isValid(value);
+        if (!isValid) {
+            setConstraintMessage(context);
+        }
+        return isValid;
     }
 
 }

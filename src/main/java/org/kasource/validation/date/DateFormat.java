@@ -39,21 +39,13 @@ import org.kasource.validation.date.impl.IterableDateValidator;
                           ArrayDateValidator.class,
                           IterableDateValidator.class})
 public @interface DateFormat {
-    String message() default "{validation.message.dateformat}";
+    String message() default "{org.kasource.validation.date.DateFormat}";
 
     /** 
      * Date Pattern from java.text.SimpleDateFormat 
      * Default value set to ISO 8601           
      **/
     String value() default "yyyy-MM-dd";
-    
-    boolean rangeCheck() default false;
-    
-    int offset() default 0;
-    
-    int before() default 0;
-    
-    int after() default 0;
     
     Class<?>[] groups() default {};
 

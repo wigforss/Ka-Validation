@@ -1,11 +1,7 @@
 package org.kasource.validation.currency;
 
-import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.HashMap;
 import java.util.HashSet;
-import java.util.List;
-import java.util.Map;
 import java.util.Set;
 
 
@@ -199,43 +195,13 @@ public enum CurrencyCode {
     ZMW (CurrencyCodeType.CURRENCY, "message.currency.ZMW", "ZM"),
     ZWD (CurrencyCodeType.CURRENCY, "message.currency.ZWD", "ZW");
     
-    private static final Map<String, Set<CurrencyCode>> COUNTRY_MAPPING = new HashMap<String, Set<CurrencyCode>>();
-   
-    private static final Map<CurrencyCodeType, List<CurrencyCode>> CODES_BY_TYPE = new HashMap<CurrencyCodeType, List<CurrencyCode>>();
-    
-    
-    static {
-        for (CurrencyCode code : CurrencyCode.values()) {
-            if (code.getCurrencyType().equals(CurrencyCodeType.CURRENCY) 
-                        || code.getCurrencyType().equals(CurrencyCodeType.COMPLEMENTARY_CURRENCY)) {
-                Set<String> countries = code.getCountries();
-                for (String country : countries) {
-                    Set<CurrencyCode> codes = COUNTRY_MAPPING.get(country);
-                    if (codes == null) {
-                        codes = new HashSet<CurrencyCode>();
-                        COUNTRY_MAPPING.put(country, codes);
-                    }
-                    codes.add(code);
-                }
-                    
-            }
-            List<CurrencyCode> codes = CODES_BY_TYPE.get(code.getCurrencyType());
-            if (codes == null) {
-                codes = new ArrayList<CurrencyCode>();
-                CODES_BY_TYPE.put(code.getCurrencyType(), codes);
-            }
-            codes.add(code);
-            
-       
-        }
-    }
-    
     private String messageKey;
     private CurrencyCodeType currencyCodeType;
     private Set<String> countries = new HashSet<String>();
     
     CurrencyCode(CurrencyCodeType type, String messageKey, String...country) {
         this.messageKey = messageKey;
+        this.currencyCodeType = type;
         if (country != null) {
             countries.addAll(Arrays.asList(country));
         }
@@ -260,11 +226,4 @@ public enum CurrencyCode {
         return countries;
     }
     
-    public static Set<CurrencyCode> currencyForCountry(String countryCode) {
-        return COUNTRY_MAPPING.get(countryCode);
-    }
-    
-    public static List<CurrencyCode> getAll(CurrencyCodeType type) {
-        return CODES_BY_TYPE.get(type);
-    }
 }

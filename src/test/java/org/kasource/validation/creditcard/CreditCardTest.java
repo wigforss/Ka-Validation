@@ -36,13 +36,71 @@ public class CreditCardTest {
     }
     
     @Test
-    public void testVisaFailed() {
+    public void testVisaOrMasterCardFailed() {
         Purchase object = new Purchase("24343243");
         Set<ConstraintViolation<Purchase>> constraintViolations =
             validator.validate(object);
         assertFalse(constraintViolations.isEmpty());
-        assertEquals("is not a valid [VISA, MASTERCARD] credit card number", 
+        assertEquals("is not a valid Visa or MasterCard credit card number", 
                     constraintViolations.iterator().next().getMessage());
+    }
+    
+    @Test
+    public void testVisaFailed() {
+        PurchaseVisa object = new PurchaseVisa("24343243");
+        Set<ConstraintViolation<PurchaseVisa>> constraintViolations =
+            validator.validate(object);
+        assertFalse(constraintViolations.isEmpty());
+        assertEquals("is not a valid Visa credit card number", 
+                    constraintViolations.iterator().next().getMessage());
+    }
+    
+    @Test
+    public void test3CardTypesFailed() {
+        PurchaseVisaMasterCardAmex object = new PurchaseVisaMasterCardAmex("24343243");
+        Set<ConstraintViolation<PurchaseVisaMasterCardAmex>> constraintViolations =
+            validator.validate(object);
+        assertFalse(constraintViolations.isEmpty());
+        assertEquals("is not a valid Visa, MasterCard or American Express credit card number", 
+                    constraintViolations.iterator().next().getMessage());
+    }
+    
+    @Test
+    public void testAnyCardTypeFailed() {
+        PurchaseAnyCard object = new PurchaseAnyCard("24343243");
+        Set<ConstraintViolation<PurchaseAnyCard>> constraintViolations =
+            validator.validate(object);
+        assertFalse(constraintViolations.isEmpty());
+        assertEquals("is not a valid credit card number", 
+                    constraintViolations.iterator().next().getMessage());
+    }
+    
+    
+    private static final class PurchaseAnyCard {
+        @CreditCard
+        private String creditCard;
+        
+        public PurchaseAnyCard(String creditCard) {
+            this.creditCard = creditCard;
+        }
+    }
+    
+    private static final class PurchaseVisa {
+        @CreditCard(CardType.VISA)
+        private String creditCard;
+        
+        public PurchaseVisa(String creditCard) {
+            this.creditCard = creditCard;
+        }
+    }
+    
+    private static final class PurchaseVisaMasterCardAmex {
+        @CreditCard({CardType.VISA, CardType.MASTERCARD, CardType.AMEX})
+        private String creditCard;
+        
+        public PurchaseVisaMasterCardAmex(String creditCard) {
+            this.creditCard = creditCard;
+        }
     }
     
     private static final class Purchase {

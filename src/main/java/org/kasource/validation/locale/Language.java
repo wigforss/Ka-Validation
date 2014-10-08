@@ -17,7 +17,11 @@ import org.kasource.validation.locale.impl.ArrayLanguageValidator;
 import org.kasource.validation.locale.impl.IterableLanguageValidator;
 import org.kasource.validation.locale.impl.LanguageValidator;
 
-
+/**
+ * Validates language code (ISO 639 alpha 2) 
+ * 
+ * @author rikardwi
+ **/
 @Documented
 @Retention(RUNTIME)
 @Target({METHOD, FIELD, CONSTRUCTOR, PARAMETER, ANNOTATION_TYPE})
@@ -25,7 +29,7 @@ import org.kasource.validation.locale.impl.LanguageValidator;
                            ArrayLanguageValidator.class,
                            IterableLanguageValidator.class})
 public @interface Language {
-    String message() default "{validation.message.language}";
+    String message() default "{org.kasource.validation.locale.Language}";
 
     boolean caseSensetive() default false;
     

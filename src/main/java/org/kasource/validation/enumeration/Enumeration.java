@@ -31,7 +31,13 @@ public @interface Enumeration {
     
     boolean caseSensetive() default false;
     
-    String message() default  "{validation.message.enumeration}";
+    String message() default  "{org.kasource.validation.enumeration.Enumeration}";
+    
+    /** 
+     * Key in resource bundle for the enum class. If not set the simple class name of the enum class (value attribute)
+     * will be used in validation error messages.
+     */
+    String enumMessageKey() default  "";
 
     Class<?>[] groups() default {};
 

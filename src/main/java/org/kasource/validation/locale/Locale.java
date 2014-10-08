@@ -17,7 +17,14 @@ import org.kasource.validation.locale.impl.ArrayLocaleValidator;
 import org.kasource.validation.locale.impl.IterableLocaleValidator;
 import org.kasource.validation.locale.impl.LocaleValidator;
 
-
+/**
+ * Validates Locale string of language and country separated by underscore.
+ * 
+ * The locale string consists of a ISO 639 alpha 2 language followed by an underscore and then a
+ * ISO 3166 alpha-2 country code. Example en_GB for English in Great Britain.
+ * 
+ * @author rikardwi
+ **/
 @Documented
 @Retention(RUNTIME)
 @Target({METHOD, FIELD, CONSTRUCTOR, PARAMETER, ANNOTATION_TYPE})
@@ -25,7 +32,7 @@ import org.kasource.validation.locale.impl.LocaleValidator;
                            IterableLocaleValidator.class, 
                            ArrayLocaleValidator.class})
 public @interface Locale {
-    String message() default "{validation.message.locale}";
+    String message() default "{org.kasource.validation.locale.Locale}";
 
     boolean caseSensetive() default true;
     

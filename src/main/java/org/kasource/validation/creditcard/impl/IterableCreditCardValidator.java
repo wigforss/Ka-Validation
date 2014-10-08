@@ -14,7 +14,11 @@ public class IterableCreditCardValidator extends AbstractCreditCardValidator imp
 
     @Override
     public boolean isValid(Iterable<? extends Object> value, ConstraintValidatorContext context) {
-        return isValidItarable(value);
+        boolean isValid = isValidItarable(value);
+        if (!isValid) {
+            setConstraintMessage(context);
+        }
+        return isValid;
     }
 
 }

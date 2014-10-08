@@ -25,7 +25,7 @@ import org.kasource.validation.email.impl.IterableEmailValidator;
                            ArrayEmailValidator.class,
                            IterableEmailValidator.class})
 public @interface Email {
-    String message() default "{validation.message.email}";
+    String message() default "{org.kasource.validation.email.Email}";
 
     boolean allowLocalAddresses() default false;
     

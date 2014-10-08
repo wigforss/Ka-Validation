@@ -3,12 +3,14 @@ package org.kasource.validation.locale.impl;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
-import java.util.Arrays;
 
 import javax.validation.ConstraintValidatorContext;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.kasource.commons.collection.builder.ListBuilder;
+import org.kasource.commons.reflection.annotation.AnnotationBuilder;
+import org.kasource.validation.locale.Locale;
 import org.kasource.validation.locale.impl.IterableLocaleValidator;
 import org.unitils.UnitilsJUnit4TestClassRunner;
 import org.unitils.easymock.EasyMockUnitils;
@@ -23,13 +25,25 @@ public class IterableLocaleValidatorTest {
     @TestedObject
     private IterableLocaleValidator validator;
     
-    @SuppressWarnings({ "rawtypes", "unchecked" })
+
+    
     @Test
-    public void test() {
+    public void testCaseSensitive() {
        EasyMockUnitils.replay();
-       assertTrue( validator.isValid((Iterable) Arrays.asList(new String[]{"en-US"}), context));
-       assertTrue(validator.isValid((Iterable)Arrays.asList(new String[]{"en-US", "sv-SE", "en"}), context));
+       validator.initialize(new AnnotationBuilder<Locale>(Locale.class).build());
+       assertTrue( validator.isValid(new ListBuilder<String>().add("en-US", "sv-SE").build(), context));
+       assertFalse( validator.isValid(new ListBuilder<String>().add("en-US", "sv-SE", "EN-US").build(), context));
+      
+    }
+    
+    @Test
+    public void testCaseInsensitive() {
+       EasyMockUnitils.replay();
+       validator.initialize(new AnnotationBuilder<Locale>(Locale.class).attr("caseSensetive", false).build());
+     
+       assertTrue( validator.isValid(new ListBuilder<String>().add("en-US", "sv-SE", "EN-US", "sv-se").build(), context));
+       assertFalse( validator.isValid(new ListBuilder<String>().add("en-US", "sv-SE","bu-LL").build(), context));
        
-       assertFalse(validator.isValid((Iterable)Arrays.asList(new String[]{"en-US", "sv-SE", "en", "bu-LL"}), context));
+      
     }
 }

@@ -8,7 +8,7 @@ public enum CardType {
      AMEX (CreditCardValidator.AMEX_VALIDATOR, "American Express"),
      DINERS (CreditCardValidator.DINERS_VALIDATOR, "Diners"),
      DISCOVER (CreditCardValidator.DISCOVER_VALIDATOR, "Discover"),
-     MASTERCARD (CreditCardValidator.MASTERCARD_VALIDATOR, "Master Card"),
+     MASTERCARD (CreditCardValidator.MASTERCARD_VALIDATOR, "MasterCard"),
      VISA (CreditCardValidator.VISA_VALIDATOR, "Visa");
    
      private CodeValidator validator;

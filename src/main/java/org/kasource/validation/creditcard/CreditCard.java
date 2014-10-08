@@ -46,7 +46,7 @@ public @interface CreditCard {
     
     CardType[] value() default {};
     
-    String message() default  "{validation.message.creditcard}";
+    String message() default  "{org.kasource.validation.creditcard.CreditCard}";
 
     Class<?>[] groups() default {};
 

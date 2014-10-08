@@ -13,26 +13,30 @@ import java.lang.annotation.Target;
 
 import javax.validation.Constraint;
 
-import org.kasource.validation.enumeration.Enumeration;
-import org.kasource.validation.enumeration.impl.ArrayEnumerationValidator;
-import org.kasource.validation.enumeration.impl.EnumerationValidator;
-import org.kasource.validation.enumeration.impl.IterableEnumerationValidator;
+import org.kasource.validation.currency.impl.ArrayCurrencyValidator;
+import org.kasource.validation.currency.impl.CurrencyValidator;
+import org.kasource.validation.currency.impl.IterableCurrencyValidator;
 
-
-
+/**
+ * Validates currency code  (ISO 4217)
+ * 
+ * @author rikardwi
+ **/
 @Documented
 @Retention(RUNTIME)
 @Target({METHOD, FIELD, CONSTRUCTOR, PARAMETER, ANNOTATION_TYPE})
-@Constraint(validatedBy = {EnumerationValidator.class,
-                           ArrayEnumerationValidator.class,
-                           IterableEnumerationValidator.class})
+@Constraint(validatedBy = {CurrencyValidator.class,
+                           ArrayCurrencyValidator.class,
+                           IterableCurrencyValidator.class})
 public @interface Currency {
     
-    CurrencyCode[] value();
+    CurrencyCode[] value() default {};
     
-    boolean currencyOnly() default true;
+    CurrencyCodeType currencyType() default CurrencyCodeType.CURRENCY;
     
-    String message() default  "{validation.message.currency}";
+    boolean caseSensetive() default false;
+    
+    String message() default  "{org.kasource.validation.currency.Currency}";
 
     Class<?>[] groups() default {};
 

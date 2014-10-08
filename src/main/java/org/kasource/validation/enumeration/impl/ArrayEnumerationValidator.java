@@ -16,7 +16,11 @@ public class ArrayEnumerationValidator extends AbstractEnumerationValidator impl
 
     @Override
     public boolean isValid(Object[] value, ConstraintValidatorContext context) {
-        return isValidArray(value);
+        boolean isValid = isValidArray(value);
+        if (!isValid) {
+            setConstraintMessage(context);
+        }
+        return isValid;
     }
 
 }

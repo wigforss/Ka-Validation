@@ -5,7 +5,7 @@ import javax.validation.ConstraintValidatorContext;
 
 import org.kasource.validation.isbn.Isbn;
 
-public class IterableApacheIsbnValidator extends AbstractIsbnValidator implements ConstraintValidator<Isbn, Iterable<? extends Object>> {
+public class IterableIsbnValidator extends AbstractIsbnValidator implements ConstraintValidator<Isbn, Iterable<? extends Object>> {
 
    
     @Override

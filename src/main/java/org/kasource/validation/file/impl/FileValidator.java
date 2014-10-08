@@ -14,7 +14,11 @@ public class FileValidator extends AbstractFileValidator implements ConstraintVa
     
     @Override
     public boolean isValid(String value, ConstraintValidatorContext context) {        
-        return isValid(value);
+        boolean isValid = isValid(value);
+        if (!isValid) {
+            setConstraintMessage(context);
+        }
+        return isValid;
     }
 
 }

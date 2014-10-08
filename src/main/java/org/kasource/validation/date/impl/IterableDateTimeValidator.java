@@ -11,7 +11,7 @@ public class IterableDateTimeValidator extends AbstractDateTimeValidator impleme
     
     @Override
     public void initialize(DateTimeFormat annotation) {
-        super.initialize(annotation.value(), annotation.rangeCheck(), annotation.offset(), annotation.before(), annotation.after(), annotation.timeUnit(), annotation.ignoreTimePart());
+        super.initialize(annotation.value());
     }
 
     @Override

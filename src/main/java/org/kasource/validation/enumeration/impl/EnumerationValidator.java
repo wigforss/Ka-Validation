@@ -15,16 +15,12 @@ public class EnumerationValidator extends AbstractEnumerationValidator implement
     }
 
     @Override
-    public boolean isValid(final String value, final ConstraintValidatorContext context) {      
-        
-        boolean isValid = super.isValid(value);
-       
-        if(!isValid) {
-            context.disableDefaultConstraintViolation();
-            context.buildConstraintViolationWithTemplate( "must be any of " + message).addConstraintViolation();
+    public boolean isValid(final String value, final ConstraintValidatorContext context) {            
+        boolean isValid = isValid(value);
+        if (!isValid) {
+            setConstraintMessage(context);
         }
         return isValid;
-       
     }
 
 }

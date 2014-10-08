@@ -2,15 +2,17 @@ package org.kasource.validation.file.impl;
 
 import java.io.File;
 
+import javax.validation.ConstraintValidatorContext;
+
 import org.kasource.validation.AbstractValidator;
 import org.kasource.validation.file.FileOperation;
 
 public abstract class AbstractFileValidator extends AbstractValidator {
     
-    private FileOperation[] fileOperations;
+    private FileOperation fileOperation;
     
     protected void initialize(org.kasource.validation.file.File annotation) {
-        fileOperations = annotation.value();
+        fileOperation = annotation.value();
     }
     
     @Override
@@ -18,12 +20,22 @@ public abstract class AbstractFileValidator extends AbstractValidator {
         if (object == null) {
             return true;
         }
-        File file = new File(object.toString());
-        for (FileOperation fileOperation : fileOperations) {
-            if (!fileOperation.getFilter().accept(file)) {
-                return false;
-            }
+        File file = null;
+        if (object instanceof File) {
+            file = (File) object;
+        } else {
+            file = new File(object.toString());
         }
+        
+        if (!fileOperation.getFilter().accept(file)) {
+            return false;
+        }
+        
         return true;
+    }
+    
+    protected void setConstraintMessage(ConstraintValidatorContext context) {    
+        context.disableDefaultConstraintViolation();
+        context.buildConstraintViolationWithTemplate("{org.kasource.validation.file.File} {" + fileOperation.getMessageKey() +"}").addConstraintViolation();    
     }
 }

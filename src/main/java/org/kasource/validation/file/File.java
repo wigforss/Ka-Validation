@@ -24,9 +24,9 @@ import org.kasource.validation.file.impl.IterableFileValidator;
                            ArrayFileValidator.class,
                            IterableFileValidator.class})
 public @interface File {
-    String message() default "{validation.message.file}";
+    String message() default "{org.kasource.validation.file.File}";
     
-    FileOperation[] value();
+    FileOperation value();
  
     
     Class<?>[] groups() default {};

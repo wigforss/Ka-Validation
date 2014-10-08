@@ -49,7 +49,7 @@ import org.kasource.validation.checkdigit.impl.NumberCheckdigitValidator;
                            ArrayCheckdigitValidator.class,
                            IterableCheckdigitValidator.class})
 public @interface Checkdigit {
-    String message() default "{validation.message.checkdigit}";
+    String message() default "{org.kasource.validation.checkdigit.Checkdigit}";
 
     Algorithm value();
     

@@ -1,7 +1,5 @@
 package org.kasource.validation.date.impl;
 
-import java.util.concurrent.TimeUnit;
-
 import javax.validation.ConstraintValidator;
 import javax.validation.ConstraintValidatorContext;
 
@@ -11,7 +9,7 @@ public class ArrayDateValidator extends AbstractDateTimeValidator implements Con
 
     @Override
     public void initialize(DateFormat annotation) {
-        super.initialize(annotation.value(), annotation.rangeCheck(), annotation.offset(), annotation.before(), annotation.after(), TimeUnit.DAYS, true);
+        super.initialize(annotation.value());
     }
 
     @Override
