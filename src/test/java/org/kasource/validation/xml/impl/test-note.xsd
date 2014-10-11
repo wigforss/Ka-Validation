@@ -1,0 +1,16 @@
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema"
+	targetNamespace="http://kasource.org/validation/test/schema/note" 
+	xmlns="http://kasource.org/validation/test/schema/note"
+	elementFormDefault="qualified">
+	
+	<xs:element name="note">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element type="xs:string" minOccurs="1" maxOccurs="1" name="to"/>
+				<xs:element type="xs:string" minOccurs="1" maxOccurs="1" name="from"/>
+				<xs:element type="xs:string" minOccurs="1" maxOccurs="1" name="heading"/>
+				<xs:element type="xs:string" minOccurs="1" maxOccurs="1" name="body"/>
+			</xs:sequence>			
+		</xs:complexType>
+	</xs:element>	
+</xs:schema>

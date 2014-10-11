@@ -29,10 +29,10 @@ import org.kasource.validation.url.impl.UrlValidator;
                           ArrayUrlValidator.class, 
                           IterableUrlValidator.class})
 public @interface Url {
-    String message() default "{validation.message.url}";
+    String message() default "{org.kasource.validation.url.Url}";
 
     /** schemas to allow. For example http. Default is all supported schemas **/
-    String[] values() default {};
+    String[] value() default {};
     
     
     /** Allow two slashes in the path component of the URL.*/

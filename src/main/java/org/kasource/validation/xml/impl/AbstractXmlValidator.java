@@ -2,48 +2,83 @@ package org.kasource.validation.xml.impl;
 
 import java.io.ByteArrayInputStream;
 import java.io.InputStream;
+import java.util.LinkedList;
+import java.util.Queue;
 
 import javax.xml.XMLConstants;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
-import javax.xml.transform.stream.StreamSource;
-import javax.xml.validation.Schema;
-import javax.xml.validation.SchemaFactory;
-import javax.xml.validation.Validator;
 
 import org.kasource.validation.AbstractValidator;
-import org.kasource.validation.DataLocationType;
 import org.kasource.validation.xml.Xml;
+import org.w3c.dom.Document;
+import org.w3c.dom.Element;
+import org.xml.sax.ErrorHandler;
+import org.xml.sax.SAXException;
+import org.xml.sax.SAXParseException;
 
 public abstract class AbstractXmlValidator extends AbstractValidator {
-
-    private ByteArrayInputStream schema;
-    private DataLocationType locationType;
+    static final String JAXP_SCHEMA_LANGUAGE =
+        "http://java.sun.com/xml/jaxp/properties/schemaLanguage";
+    static final String JAXP_SCHEMA_SOURCE =
+        "http://java.sun.com/xml/jaxp/properties/schemaSource";
+  
+    private InputStream[] schemas;
     
-    protected void initialize(Xml annotation, DataLocationType locationType) {
-        this.locationType = locationType;
-        String schemaLocation = annotation.schemaLocation();
-        if (!schemaLocation.isEmpty()) {
+    protected void initialize(Xml annotation) {
+      
+        String[] schemaLocation = annotation.schemaLocation();
+        if (schemaLocation.length > 0) {
            try {
-              schema = new ByteArrayInputStream(loadFromLocation(schemaLocation, annotation.schemaLocationType()));
+              schemas = new InputStream[schemaLocation.length];
+              for(int i = 0; i < schemaLocation.length; i++) {
+                  schemas[i] = new ByteArrayInputStream(loadFromLocation(schemaLocation[i]));
+              }
            } catch (Exception e) {
                throw new IllegalStateException(AbstractXmlValidator.class.getSimpleName() +  " could not load schema from " + schemaLocation, e);
            }
         }
     }
    
-    @Override
-    protected boolean isValidContent(String value) {
+    protected Document getContent(byte[] value) {
+        DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
+        
+        try {
+            DocumentBuilder parser = factory.newDocumentBuilder();
+            XmlErrorHandler errorHandler = new XmlErrorHandler();
+            parser.setErrorHandler(errorHandler);
+            Document document = parser.parse(new ByteArrayInputStream(value));
+            if (errorHandler.getErrors().size() > 0) {
+                return null;
+            }
+            return document;
+        } catch (Exception e) {
+            return null;
+        }           
+       
+    }
+   
+    protected boolean validContent(byte[] value) {
         DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
         factory.setValidating(true);
-        DocumentBuilder parser;
+        factory.setNamespaceAware(true);
+        factory.setAttribute(JAXP_SCHEMA_LANGUAGE, XMLConstants.W3C_XML_SCHEMA_NS_URI);
+        if (schemas != null) {         
+            factory.setAttribute(JAXP_SCHEMA_SOURCE, schemas);
+        }
         try {
-            parser = factory.newDocumentBuilder();
-            parser.parse(value);
+            DocumentBuilder parser = factory.newDocumentBuilder();
+            XmlErrorHandler errorHandler = new XmlErrorHandler();
+            parser.setErrorHandler(errorHandler);
+            parser.parse(new ByteArrayInputStream(value));
+            if (errorHandler.getErrors().size() > 0) {
+                return false;
+            }
+            return true;
         } catch (Exception e) {
             return false;
         }           
-        return true;
+       
     }
     
    
@@ -54,36 +89,88 @@ public abstract class AbstractXmlValidator extends AbstractValidator {
         }
        
         try {
-            byte[] data = loadFromLocation(object.toString(), locationType);
-            if (!isValidContent(new String(data, "UTF-8"))) {
+            byte[] data = loadFromLocation(object.toString());
+           Document document = getContent(data);
+            if (document == null) {
                 return false;
             }
-            
-            if (schema != null) {
-                validateSchemaCompliance(new ByteArrayInputStream(data), schema);
+            if (doValidation(document)) {
+                return validContent(data);
             }
-            return true;
+            /*
+            if (schema != null) {
+               
+                return validateSchemaCompliance(document);
+            }*/
+           return true;
         } catch (Exception e) {
             return false;
         }
     }
     
-    private boolean validateSchemaCompliance(InputStream xml, InputStream xsd) {
-        try
-        {
-            SchemaFactory factory = 
-                SchemaFactory.newInstance(XMLConstants.W3C_XML_SCHEMA_NS_URI);
-            Schema schema = factory.newSchema(new StreamSource(xsd));
-            Validator validator = schema.newValidator();
-            validator.validate(new StreamSource(xml));
+    private boolean doValidation(Document document) {
+        if (schemas != null) {
             return true;
         }
-        catch(Exception ex)
+        Element element = document.getDocumentElement();
+        if (!element.getAttribute("xmlns").isEmpty() && 
+                    !element.getAttribute("xmlns:xsi").isEmpty() &&
+                    !element.getAttribute("xsi:schemaLocation").isEmpty()) {
+            return true;
+        }
+        return false;
+    }
+    
+    /*
+    private boolean validateSchemaCompliance(Document document) {
+       
+        try
         {
+            Element element = document.getDocumentElement();
+            if (element.getAttribute("xmlns").isEmpty()) {
+               
+                element.setAttribute("xmlns", schema.getDocumentElement().getAttribute("targetNamespace"));
+                element.setAttribute("xmlns:xsi", "http://www.w3.org/2001/XMLSchema-instance");
+            }
+            
+            SchemaFactory factory = 
+                SchemaFactory.newInstance(XMLConstants.W3C_XML_SCHEMA_NS_URI);
+            Schema schema = factory.newSchema(new StreamSource(new ByteArrayInputStream(schemaBytes)));
+          
+            
+            Validator validator = schema.newValidator();
+           
+            validator.validate(new DOMSource(document));
+            return true;
+        } catch(Exception ex) {
             return false;
         }
     }
-   
+   */
 
+    private static class XmlErrorHandler implements ErrorHandler {
 
+        private Queue<SAXParseException> errorQueue = new LinkedList<SAXParseException>();
+        
+        @Override
+        public void warning(SAXParseException saxParseException) throws SAXException {
+            errorQueue.add(saxParseException);
+        }
+
+        @Override
+        public void error(SAXParseException saxParseException) throws SAXException {
+            errorQueue.add(saxParseException);
+            
+        }
+
+        @Override
+        public void fatalError(SAXParseException saxParseException) throws SAXException {
+            errorQueue.add(saxParseException);
+            
+        }
+        
+        public Queue getErrors() {
+            return errorQueue;
+        }
+    }
 }

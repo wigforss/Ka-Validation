@@ -14,7 +14,6 @@ import java.lang.annotation.Target;
 
 import javax.validation.Constraint;
 
-import org.kasource.commons.reflection.Modifier;
 import org.kasource.validation.reflection.impl.ArrayJavaClassValidator;
 import org.kasource.validation.reflection.impl.ClassJavaClassValidator;
 import org.kasource.validation.reflection.impl.IterableJavaClassValidator;
@@ -29,19 +28,9 @@ import org.kasource.validation.reflection.impl.JavaClassValidator;
                             ArrayJavaClassValidator.class,
                             IterableJavaClassValidator.class})
 public @interface JavaClass {
-    String message() default "{validation.message.javaclass}";
+    String message() default "{org.kasource.validation.reflection.JavaClassType.ANY}";
 
     JavaClassType value() default JavaClassType.ANY;
-    Modifier[] modifier() default {};
-    Class<?>[] implementsInterface() default {};
-    Class<? extends Annotation>[] hasAnnotation() default {};
-    /** is super class of **/
-    Class<?>[] assignableFrom() default {};
-    /** extends or implements **/
-    Class<?>[] assignableTo() default {};
-    
-    String[] fields() default {};
-    Class<?> superClass() default JavaClass.class;
     
     Class<?>[] groups() default {};
 

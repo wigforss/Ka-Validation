@@ -10,7 +10,7 @@ import org.kasource.validation.xml.Jaxb;
 public class UriJaxbValidator extends AbstractJaxbValidator  implements ConstraintValidator<Jaxb, URI>  {
     @Override
     public void initialize(Jaxb annotation) {
-       super.initialize(annotation.value(), annotation.location()); 
+       super.initialize(annotation.value()); 
     }
     
     @Override

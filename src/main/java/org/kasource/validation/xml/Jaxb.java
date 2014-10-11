@@ -13,10 +13,6 @@ import java.lang.annotation.Target;
 
 import javax.validation.Constraint;
 
-import org.kasource.validation.DataLocationType;
-import org.kasource.validation.file.impl.ArrayFileValidator;
-import org.kasource.validation.file.impl.FileValidator;
-import org.kasource.validation.file.impl.IterableFileValidator;
 import org.kasource.validation.xml.impl.ArrayJaxbValidator;
 import org.kasource.validation.xml.impl.IterableJaxbValidator;
 import org.kasource.validation.xml.impl.JaxbValidator;
@@ -32,12 +28,9 @@ import org.kasource.validation.xml.impl.UrlJaxbValidator;
                            ArrayJaxbValidator.class,
                            IterableJaxbValidator.class})
 public @interface Jaxb {
-    String message() default "{validation.message.jaxb}";
+    String message() default "{org.kasource.validation.xml.Jaxb}";
     
-    Class<?> value();
-    
-    DataLocationType location() default DataLocationType.INLINE;
-    
+    Class<?> value();  
     
     Class<?>[] groups() default {};
 

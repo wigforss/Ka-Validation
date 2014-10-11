@@ -9,10 +9,10 @@ public class AbstractUrlValidator extends AbstractValidator {
     private UrlValidator validator;
     
     protected void initialize(Url annotation) {
-        if (annotation.values().length == 0) {    
+        if (annotation.value().length == 0) {    
             validator = new UrlValidator(UrlValidator.ALLOW_ALL_SCHEMES + getOptions(annotation));
         } else {
-            validator = new UrlValidator(annotation.values(), getOptions(annotation));
+            validator = new UrlValidator(annotation.value(), getOptions(annotation));
         }   
     }
     

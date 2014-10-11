@@ -17,7 +17,13 @@ import org.kasource.validation.uuid.impl.ArrayUuidValidator;
 import org.kasource.validation.uuid.impl.IterableUuidValidator;
 import org.kasource.validation.uuid.impl.UuidValidator;
 
-
+/**
+ * Validates a Universally Unique Identifier (UUID), see http://en.wikipedia.org/wiki/Universally_unique_identifier.
+ * 
+ * Default is lower case with dashes. 
+ * 
+ * @author rikardwi
+ **/
 @Documented
 @Retention(RUNTIME)
 @Target({METHOD, FIELD, CONSTRUCTOR, PARAMETER, ANNOTATION_TYPE})
@@ -26,9 +32,9 @@ import org.kasource.validation.uuid.impl.UuidValidator;
                           IterableUuidValidator.class})
 public @interface Uuid {
     
-    String message() default "{validation.message.uuid}";
+    String message() default "{org.kasource.validation.uuid.Uuid}";
 
-    boolean lowercase() default true;
+    boolean lowerCase() default true;
     
     boolean useDashes() default true;
     

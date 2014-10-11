@@ -14,7 +14,11 @@ public class IterableJavaClassValidator extends AbstractJavaClassValidator imple
     
     @Override
     public boolean isValid(Iterable<? extends Object>  value, ConstraintValidatorContext context) {      
-        return isValid(value);
+        boolean isValid = isValidItarable(value);
+        if (!isValid) {
+            setConstraintMessage(context);
+        }
+        return isValid;
     }
 
 }

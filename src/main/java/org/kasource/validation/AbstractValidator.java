@@ -47,53 +47,22 @@ public abstract class AbstractValidator {
     
     protected abstract boolean isValid(Object object);
     
-    protected boolean isValidContent(String value) {
-        return false;
-    }
+ 
     
-    protected byte[] loadFromLocation(String location, DataLocationType locationType) throws Exception {
-        switch(locationType) {
-        case INLINE:
-            return location.getBytes(Charset.forName("UTF-8"));
-        case CLASSPATH:
+    protected byte[] loadFromLocation(String location) throws Exception {
+        
+        if (asUrl(location.trim()) != null){
+            return loadFromUrl(asUrl(location.trim()));
+        } else if (location.startsWith(CLASSPATH_PREFIX)) {
             return loadFromClasspath(location);
-        case FILE:
+        } else if (location.startsWith(FILE_PREFIX)) {
             return loadFromFile(location);
-        case URL:
-            return loadFromUrl(asUrl(location));
-         default: 
-             return loadFromUnknown(location);
+        } else {
+            return location.getBytes(Charset.forName("UTF-8"));
         }
     }
    
-    /**
-     * Resolves data from the location as:
-     * <ul>
-     *      <li>If location validates OK, it returned as the actual data</li>
-     *      <li>If location can be created as an URL the data is loaded from that URL</li>
-     *      <li>If the location has the file prefix (file:) the data is loaded from file</li>
-     *      <li>Load data from the class path</li>
-     * <ul>
-     * @param location  Data location
-     * 
-     * @return data from location
-     * 
-     * @throws IOException 
-     **/
-    protected byte[] loadFromUnknown(String location) throws IOException {
-        if (isValidContent(location)) {
-            return location.getBytes(Charset.forName("UTF-8"));
-        }
-        URL url = asUrl(location);
-        if (url != null) {
-            return loadFromUrl(url);
-        } else if (location.startsWith(FILE_PREFIX)){
-               return loadFromFile(location);
-        } else {
-               return loadFromClasspath(location);
-        }
-        
-    }
+    
    
     
     protected byte[] loadFromClasspath(String location) throws IOException {

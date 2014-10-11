@@ -1,0 +1,8 @@
+<?xml version="1.0"?>
+<note xmlns="http://kasource.org/validation/test/schema/note">
+	<to>Tove</to>
+	<from>Jani</from>
+	<heading>Reminder</heading>
+	<body>Don't forget me this weekend!</body>
+	<extra>Extra data not suppose to be here</extra>
+</note>

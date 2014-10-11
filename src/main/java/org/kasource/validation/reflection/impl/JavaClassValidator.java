@@ -5,7 +5,7 @@ import javax.validation.ConstraintValidatorContext;
 
 import org.kasource.validation.reflection.JavaClass;
 
-public class JavaClassValidator extends AbstractJavaClassValidator implements ConstraintValidator<JavaClass, String>{
+public class JavaClassValidator extends AbstractJavaClassValidator implements ConstraintValidator<JavaClass, String> {
 
     @Override
     public void initialize(JavaClass annotation) {
@@ -14,7 +14,11 @@ public class JavaClassValidator extends AbstractJavaClassValidator implements Co
     
     @Override
     public boolean isValid(String value, ConstraintValidatorContext context) {      
-        return isValid(value);
+        boolean isValid = isValid(value);
+        if (!isValid) {
+            setConstraintMessage(context);
+        }
+        return isValid;
     }
 
 }

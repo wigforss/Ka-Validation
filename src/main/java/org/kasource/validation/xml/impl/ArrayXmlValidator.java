@@ -9,7 +9,7 @@ public class ArrayXmlValidator extends AbstractXmlValidator implements Constrain
 
     @Override
     public void initialize(Xml annotation) {
-       super.initialize(annotation, annotation.value()); 
+       super.initialize(annotation); 
     }
     
     @Override

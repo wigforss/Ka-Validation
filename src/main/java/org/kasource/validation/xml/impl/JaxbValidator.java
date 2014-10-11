@@ -8,7 +8,7 @@ import org.kasource.validation.xml.Jaxb;
 public class JaxbValidator extends AbstractJaxbValidator  implements ConstraintValidator<Jaxb, String>  {
     @Override
     public void initialize(Jaxb annotation) {
-       super.initialize(annotation.value(), annotation.location()); 
+       super.initialize(annotation.value()); 
     }
     
     @Override

@@ -7,16 +7,15 @@ import javax.xml.bind.JAXBException;
 import javax.xml.bind.Unmarshaller;
 
 import org.kasource.validation.AbstractValidator;
-import org.kasource.validation.DataLocationType;
 
 public abstract class AbstractJaxbValidator  extends AbstractValidator {
 
     
     private JAXBContext jaxbContext;
-    private DataLocationType locationType;
     
-    protected void initialize(Class<?> targetClass, DataLocationType locationType) {
-        this.locationType = locationType;
+    
+    protected void initialize(Class<?> targetClass) {
+      
         try {
             jaxbContext = JAXBContext.newInstance(targetClass);
         } catch (JAXBException e) {
@@ -30,7 +29,7 @@ public abstract class AbstractJaxbValidator  extends AbstractValidator {
             return true;
         }
        try {
-              byte[] data = loadFromLocation(object.toString(), locationType);
+              byte[] data = loadFromLocation(object.toString());
               Unmarshaller unmarshaller = jaxbContext.createUnmarshaller();
               unmarshaller.unmarshal(new ByteArrayInputStream(data));
               return true;

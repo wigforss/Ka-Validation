@@ -13,13 +13,30 @@ import java.lang.annotation.Target;
 
 import javax.validation.Constraint;
 
-import org.kasource.validation.DataLocationType;
 import org.kasource.validation.xml.impl.ArrayXmlValidator;
 import org.kasource.validation.xml.impl.IterableXmlValidator;
 import org.kasource.validation.xml.impl.UriXmlValidator;
 import org.kasource.validation.xml.impl.UrlXmlValidator;
 import org.kasource.validation.xml.impl.XmlValidator;
 
+/**
+ * Validate that the value is a valid XML.
+ * 
+ * If the attribute schemaLocation is set or if the XML contains a schemaLocation attribute the 
+ * XML will be validated against the referenced XML Schema (XSD). If schema reference or the schema
+ * itself is invalid, the XML is regarded as invalid.
+ * 
+ * Value might be a String of XML data as well as:
+ * <p>
+ * <ul>
+ *  <li><b>URL reference</b> to the XML to validate like http:// or file://</li>
+ *  <li><b>Class path reference</b> to the XML file to validate, with the <b>classpath:</b> prefix
+ *  <li><b>File reference</b> to the XML file to validate, with the <b>file:</b> prefix
+ *  <li></li>
+ * </ul>
+ * 
+ * @author rikardwi
+ **/
 @Documented
 @Retention(RUNTIME)
 @Target({METHOD, FIELD, CONSTRUCTOR, PARAMETER, ANNOTATION_TYPE})
@@ -29,16 +46,10 @@ import org.kasource.validation.xml.impl.XmlValidator;
                            ArrayXmlValidator.class,
                            IterableXmlValidator.class})
 public @interface Xml {
-String message() default "{validation.message.xml}";
+    String message() default "{org.kasource.validation.xml.Xml}";
     
-    String schemaLocation() default "";
-    
-    DataLocationType schemaLocationType() default DataLocationType.UNKNOWN;
-    
-    DataLocationType value() default DataLocationType.INLINE;
-    
-    boolean isLocation() default false;
-    
+    String[] schemaLocation() default {};
+     
     Class<?>[] groups() default {};
 
     Class<?>[] payload() default {};

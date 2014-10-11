@@ -9,7 +9,7 @@ public class IterableXmlValidator extends AbstractXmlValidator implements Constr
 
     @Override
     public void initialize(Xml annotation) {
-       super.initialize(annotation, annotation.value()); 
+       super.initialize(annotation); 
     }
     
     @Override

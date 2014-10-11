@@ -14,7 +14,11 @@ public class ClassJavaClassValidator extends AbstractJavaClassValidator implemen
     
     @Override
     public boolean isValid(Class<?> value, ConstraintValidatorContext context) {      
-        return isValid(value);
+        boolean isValid = isValid(value);
+        if (!isValid) {
+            setConstraintMessage(context);
+        }
+        return isValid;
     }
 
 }

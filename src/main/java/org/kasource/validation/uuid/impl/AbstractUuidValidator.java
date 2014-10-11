@@ -15,7 +15,7 @@ public abstract class AbstractUuidValidator extends AbstractValidator {
     
     protected void initialize(Uuid annotation) {
        ignoreCase = annotation.ignoreCase();
-       if (ignoreCase || annotation.lowercase()) {
+       if (ignoreCase || annotation.lowerCase()) {
            if (annotation.useDashes()) {
                regExp = LOWERCASE_DASHES;
            } else {
