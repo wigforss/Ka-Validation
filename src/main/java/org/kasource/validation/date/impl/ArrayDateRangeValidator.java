@@ -16,7 +16,12 @@ public class ArrayDateRangeValidator extends AbstractDateRangeValidator implemen
 
     @Override
     public boolean isValid(Object[] value, ConstraintValidatorContext context) {
-       return isValidArray(value);
+       try {
+           return  isValidArray(value);
+       } catch (DateOutOfRangeException e) {
+          setConstraintMessage(context, e.getRange());
+          return false;
+       }
     }
 
 }

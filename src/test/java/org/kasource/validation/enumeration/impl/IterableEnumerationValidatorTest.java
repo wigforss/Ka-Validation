@@ -27,7 +27,7 @@ public class IterableEnumerationValidatorTest {
     private ConstraintValidatorContext context;
     
     @Mock
-    private ConstraintViolationBuilder violationBuilder;
+    private ConstraintViolationBuilder builder;
         
     @TestedObject
     private IterableEnumerationValidator validator;
@@ -43,10 +43,12 @@ public class IterableEnumerationValidatorTest {
     
     @Test
     public void testCaseSensitiveEnumerationValue() {
-        context.disableDefaultConstraintViolation();
+        
+        context.disableDefaultConstraintViolation();  
         expectLastCall();
-        expect(context.buildConstraintViolationWithTemplate("{org.kasource.validation.enumeration.Enumeration} TimeUnit {validation.message.valid.value} [NANOSECONDS, MICROSECONDS, MILLISECONDS, SECONDS, MINUTES, HOURS, DAYS]")).andReturn(violationBuilder);
-        expect(violationBuilder.addConstraintViolation()).andReturn(context);
+        expect(context.buildConstraintViolationWithTemplate("{org.kasource.validation.enumeration.Enumeration} TimeUnit, {validation.message.valid.values} [NANOSECONDS, MICROSECONDS, MILLISECONDS, SECONDS, MINUTES, HOURS, DAYS]")).andReturn(builder);
+        expect(builder.addConstraintViolation()).andReturn(context);
+        
         EasyMockUnitils.replay();
        
         validator.initialize(new AnnotationBuilder<Enumeration>(Enumeration.class).value(TimeUnit.class).attr("caseSensetive", true).build());
@@ -55,10 +57,11 @@ public class IterableEnumerationValidatorTest {
     
     @Test
     public void testInvalidEnumerationValue() {
-        context.disableDefaultConstraintViolation();
+        context.disableDefaultConstraintViolation();   
         expectLastCall();
-        expect(context.buildConstraintViolationWithTemplate("{org.kasource.validation.enumeration.Enumeration} TimeUnit {validation.message.valid.value} [NANOSECONDS, MICROSECONDS, MILLISECONDS, SECONDS, MINUTES, HOURS, DAYS]")).andReturn(violationBuilder);
-        expect(violationBuilder.addConstraintViolation()).andReturn(context);
+        expect(context.buildConstraintViolationWithTemplate("{org.kasource.validation.enumeration.Enumeration} TimeUnit, {validation.message.valid.values} [NANOSECONDS, MICROSECONDS, MILLISECONDS, SECONDS, MINUTES, HOURS, DAYS]")).andReturn(builder);
+        expect(builder.addConstraintViolation()).andReturn(context);
+        
         EasyMockUnitils.replay();
        
         validator.initialize(new AnnotationBuilder<Enumeration>(Enumeration.class).value(TimeUnit.class).attr("caseSensetive", true).build());

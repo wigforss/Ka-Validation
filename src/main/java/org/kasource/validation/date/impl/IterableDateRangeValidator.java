@@ -15,7 +15,12 @@ public class IterableDateRangeValidator extends AbstractDateRangeValidator imple
 
     @Override
     public boolean isValid(Iterable<? extends Object> value, ConstraintValidatorContext context) {
-       return isValidItarable(value);
+       try {
+           return isValidItarable(value);
+       } catch (DateOutOfRangeException e) {
+          setConstraintMessage(context, e.getRange());
+          return false;
+       }
     }
 
 }

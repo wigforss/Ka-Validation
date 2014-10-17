@@ -45,7 +45,7 @@ public class EnumerationValidatorTest {
     public void testCaseSensitiveEnumerationValue() {
         context.disableDefaultConstraintViolation();
         expectLastCall();
-        expect(context.buildConstraintViolationWithTemplate("{org.kasource.validation.enumeration.Enumeration} TimeUnit {validation.message.valid.value} [NANOSECONDS, MICROSECONDS, MILLISECONDS, SECONDS, MINUTES, HOURS, DAYS]")).andReturn(violationBuilder);
+        expect(context.buildConstraintViolationWithTemplate("{org.kasource.validation.enumeration.Enumeration} TimeUnit, {validation.message.valid.values} [NANOSECONDS, MICROSECONDS, MILLISECONDS, SECONDS, MINUTES, HOURS, DAYS]")).andReturn(violationBuilder);
         expect(violationBuilder.addConstraintViolation()).andReturn(context);
         EasyMockUnitils.replay();
        
@@ -57,7 +57,7 @@ public class EnumerationValidatorTest {
     public void testInvalidEnumerationValue() {
         context.disableDefaultConstraintViolation();
         expectLastCall();
-        expect(context.buildConstraintViolationWithTemplate("{org.kasource.validation.enumeration.Enumeration} TimeUnit {validation.message.valid.value} [NANOSECONDS, MICROSECONDS, MILLISECONDS, SECONDS, MINUTES, HOURS, DAYS]")).andReturn(violationBuilder);
+        expect(context.buildConstraintViolationWithTemplate("{org.kasource.validation.enumeration.Enumeration} TimeUnit, {validation.message.valid.values} [NANOSECONDS, MICROSECONDS, MILLISECONDS, SECONDS, MINUTES, HOURS, DAYS]")).andReturn(violationBuilder);
         expect(violationBuilder.addConstraintViolation()).andReturn(context);
         EasyMockUnitils.replay();
        
@@ -65,4 +65,3 @@ public class EnumerationValidatorTest {
         assertFalse(validator.isValid("SE", context));
     }
 }
-

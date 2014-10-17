@@ -1,5 +1,7 @@
 package org.kasource.validation.creditcard.impl;
 
+import static org.easymock.EasyMock.expect;
+import static org.easymock.EasyMock.expectLastCall;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
@@ -9,6 +11,7 @@ import java.util.List;
 import java.util.Set;
 
 import javax.validation.ConstraintValidatorContext;
+import javax.validation.ConstraintValidatorContext.ConstraintViolationBuilder;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -32,6 +35,9 @@ public class IterableCreditCardValidatorTest {
     @Mock
     private ConstraintValidatorContext context;
     
+    @Mock
+    private ConstraintViolationBuilder builder;
+    
     @TestedObject
     private IterableCreditCardValidator validator;
     
@@ -48,6 +54,12 @@ public class IterableCreditCardValidatorTest {
         cardsWithDiners.add(MASTER_CARD);
         cardsWithDiners.add(DINERS);
         cardsWithDiners.add(AMEX);
+        
+        context.disableDefaultConstraintViolation();
+        expectLastCall();
+        expect(context.buildConstraintViolationWithTemplate("{org.kasource.validation.creditcard.CreditCard.alt.3}"))
+                    .andReturn(builder);
+        expect(builder.addConstraintViolation()).andReturn(context);
         
         EasyMockUnitils.replay();
         validator.initialize(new AnnotationBuilder<CreditCard>(CreditCard.class)
@@ -71,6 +83,12 @@ public class IterableCreditCardValidatorTest {
         cardsWithDiners.add(MASTER_CARD);
         cardsWithDiners.add(DINERS);
         cardsWithDiners.add(AMEX);
+        
+        context.disableDefaultConstraintViolation();
+        expectLastCall();
+        expect(context.buildConstraintViolationWithTemplate("{org.kasource.validation.creditcard.CreditCard.alt.3}"))
+                    .andReturn(builder);
+        expect(builder.addConstraintViolation()).andReturn(context);
         
         EasyMockUnitils.replay();
         validator.initialize(new AnnotationBuilder<CreditCard>(CreditCard.class)

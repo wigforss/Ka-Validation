@@ -1,9 +1,12 @@
 package org.kasource.validation.creditcard.impl;
 
+import static org.easymock.EasyMock.expect;
+import static org.easymock.EasyMock.expectLastCall;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
 import javax.validation.ConstraintValidatorContext;
+import javax.validation.ConstraintValidatorContext.ConstraintViolationBuilder;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -27,11 +30,21 @@ public class CreditCardValidatorTest {
     @Mock
     private ConstraintValidatorContext context;
     
+    @Mock
+    private ConstraintViolationBuilder builder;
+    
     @TestedObject
     private CreditCardValidator validator;
     
     @Test
     public void testVisa() {
+        int times = 5;
+        context.disableDefaultConstraintViolation();
+        expectLastCall().times(times);
+        expect(context.buildConstraintViolationWithTemplate("{org.kasource.validation.creditcard.CreditCard.alt.1}"))
+                    .andReturn(builder).times(times);
+        expect(builder.addConstraintViolation()).andReturn(context).times(times);
+        
         EasyMockUnitils.replay();
         validator.initialize(new AnnotationBuilder<CreditCard>(CreditCard.class)
                                 .value(new CardType[]{CardType.VISA})
@@ -48,6 +61,14 @@ public class CreditCardValidatorTest {
     
     @Test
     public void testMasterCard() {
+        
+        int times = 5;
+        context.disableDefaultConstraintViolation();
+        expectLastCall().times(times);
+        expect(context.buildConstraintViolationWithTemplate("{org.kasource.validation.creditcard.CreditCard.alt.1}"))
+                    .andReturn(builder).times(times);
+        expect(builder.addConstraintViolation()).andReturn(context).times(times);
+        
         EasyMockUnitils.replay();
         validator.initialize(new AnnotationBuilder<CreditCard>(CreditCard.class)
                                 .value(new CardType[]{CardType.MASTERCARD})
@@ -64,6 +85,13 @@ public class CreditCardValidatorTest {
     
     @Test
     public void testAmex() {
+        int times = 5;
+        context.disableDefaultConstraintViolation();
+        expectLastCall().times(times);
+        expect(context.buildConstraintViolationWithTemplate("{org.kasource.validation.creditcard.CreditCard.alt.1}"))
+                    .andReturn(builder).times(times);
+        expect(builder.addConstraintViolation()).andReturn(context).times(times);
+        
         EasyMockUnitils.replay();
         validator.initialize(new AnnotationBuilder<CreditCard>(CreditCard.class)
                                 .value(new CardType[]{CardType.AMEX})
@@ -80,6 +108,13 @@ public class CreditCardValidatorTest {
     
     @Test
     public void testDiners() {
+        int times = 5;
+        context.disableDefaultConstraintViolation();
+        expectLastCall().times(times);
+        expect(context.buildConstraintViolationWithTemplate("{org.kasource.validation.creditcard.CreditCard.alt.1}"))
+                    .andReturn(builder).times(times);
+        expect(builder.addConstraintViolation()).andReturn(context).times(times);
+        
         EasyMockUnitils.replay();
         validator.initialize(new AnnotationBuilder<CreditCard>(CreditCard.class)
                                 .value(new CardType[]{CardType.DINERS})
@@ -96,6 +131,13 @@ public class CreditCardValidatorTest {
     
     @Test
     public void testDiscover() {
+        int times = 5;
+        context.disableDefaultConstraintViolation();
+        expectLastCall().times(times);
+        expect(context.buildConstraintViolationWithTemplate("{org.kasource.validation.creditcard.CreditCard.alt.1}"))
+                    .andReturn(builder).times(times);
+        expect(builder.addConstraintViolation()).andReturn(context).times(times);
+        
         EasyMockUnitils.replay();
         validator.initialize(new AnnotationBuilder<CreditCard>(CreditCard.class)
                                 .value(new CardType[]{CardType.DISCOVER})
@@ -112,6 +154,13 @@ public class CreditCardValidatorTest {
     
     @Test
     public void testVisaMasterCardAmx() {
+        int times = 2;
+        context.disableDefaultConstraintViolation();
+        expectLastCall().times(times);
+        expect(context.buildConstraintViolationWithTemplate("{org.kasource.validation.creditcard.CreditCard.alt.3}"))
+                    .andReturn(builder).times(times);
+        expect(builder.addConstraintViolation()).andReturn(context).times(times);
+        
         EasyMockUnitils.replay();
         validator.initialize(new AnnotationBuilder<CreditCard>(CreditCard.class)
                                 .value(new CardType[]{CardType.VISA, CardType.MASTERCARD, CardType.AMEX})

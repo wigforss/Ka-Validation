@@ -1,9 +1,12 @@
 package org.kasource.validation.creditcard.impl;
 
+import static org.easymock.EasyMock.expect;
+import static org.easymock.EasyMock.expectLastCall;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
 import javax.validation.ConstraintValidatorContext;
+import javax.validation.ConstraintValidatorContext.ConstraintViolationBuilder;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -11,6 +14,7 @@ import org.kasource.commons.reflection.annotation.AnnotationBuilder;
 import org.kasource.validation.creditcard.CardType;
 import org.kasource.validation.creditcard.CreditCard;
 import org.kasource.validation.creditcard.impl.ArrayCreditCardValidator;
+import org.kasource.validation.reflection.impl.JavaClassValidator;
 import org.unitils.UnitilsJUnit4TestClassRunner;
 import org.unitils.easymock.EasyMockUnitils;
 import org.unitils.easymock.annotation.Mock;
@@ -27,8 +31,12 @@ public class ArrayCreditCardValidatorTest {
     @Mock
     private ConstraintValidatorContext context;
     
+    @Mock
+    private ConstraintViolationBuilder builder;
+    
     @TestedObject
     private ArrayCreditCardValidator validator;
+    
     
     @Test
     public void arrayTest() {
@@ -37,7 +45,12 @@ public class ArrayCreditCardValidatorTest {
        
         
         String[] cardsWithDiners = {VISA, MASTER_CARD, DINERS, AMEX};
-       
+        
+        context.disableDefaultConstraintViolation();
+        expectLastCall();
+        expect(context.buildConstraintViolationWithTemplate("{org.kasource.validation.creditcard.CreditCard.alt.3}"))
+                    .andReturn(builder);
+        expect(builder.addConstraintViolation()).andReturn(context);
         
         EasyMockUnitils.replay();
         validator.initialize(new AnnotationBuilder<CreditCard>(CreditCard.class)
